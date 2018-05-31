@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Placeholder</title>
+    <link rel="stylesheet" href="{% static 'project/styles.css' %}">
+</head>
+<body>
+    <!--Wrapper-->
+    <div id="wrapper">
+        <a href="/home" class='right'>Home</a>
+        <a href="/user/{{request.session.id}}" class='right'>My Profile</a>
+        <a href="/logout" class='right'>Logout</a>
+        <div class='inline-block'>
+            <h4>Edit Task:</h4>
+            <br>
+            <!--FORM-->
+            <form action="/task/edit/process/{{task.id}}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <!--Title-->
+                        <td>Title:</td>
+                        <td><input type='text' name='title' value="{{task.title}}"></td>
+                    </tr>
+                    <tr>
+                        <!--Description-->
+                        <td>Description:</td>
+                        <td><textarea name="description" cols="50" rows="10"></textarea></td>
+                    </tr>
+                    <tr>
+                        <!--Pay-->
+                        <td>Pay:</td>
+                        <td><input type="number" name="pay" min=".01" step=".01" value="{{task.price}}"></td>
+                    </tr>
+                    <tr>
+                        <!--Where-->
+                        <td>Five Digit Zip:</td>
+                        <td><input type='text' name='zip_code' required pattern="[0-9]{5}" value="{{task.zip_code}}"></td>
+                    </tr>
+                    <tr>
+                        <!--Image-->
+                        <td>Add an Image:</td>
+                        <td><input type='file' name='image' accept="image/*"></td>
+                    </tr>
+                </table>
+                <br>
+                <input type="submit" value='Edit Task'>
+            </form>
+        </div>
+        <br>
+        <!--Error Messages-->
+        {% if messages %} 
+            {% for message in messages %}
+                <p class='red'>{{message}}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>

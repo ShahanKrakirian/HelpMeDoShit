@@ -1,0 +1,131 @@
+{% load has_bid %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Placeholder</title>
+    <link rel="stylesheet" href="{% static 'project/styles.css' %}">
+</head>
+<body>
+    <!--Wrapper-->
+    <div id="wrapper">
+        <!--Top-->
+        <div id='header'>
+            <h2 class='inline-block white'>Your Profile</h2>
+            <a href="/home" class='inline-block right_550 white'>Home</a>
+            <a href="/logout" class='inline-block white'>Logout</a>
+        </div>
+        <div class="profile">
+            <div class='size_small inline-block margin-top'>
+                <img src='{{logged_user.image.url}}'>
+            </div>
+            <div class="profile_info inline-block">
+                <p class='inline-block neg_margin'>Name: {{logged_user.name}}</p>
+                <p class='inline-block neg_margin'>Username: {{logged_user.username}}</p>
+                <p class='inline-block neg_margin'>Email: {{logged_user.email}}</p>
+                <p class='inline-block neg_margin'>Zip Code: {{logged_user.zip_code}}</p>
+                <p><a class='inline-block neg_margin' href="/user/{{logged_user.id}}/edit">Edit Profile</a></p>
+            </div>
+        </div>
+        <h4>Shit I need to do:</h4>
+        <div class='middle size border-bottom'>
+        <table class="table">
+            <tr>
+                <th>Title</th>
+                <th>Image</th>
+                <th>Description</th>
+                <th>Pay</th>
+                <th>Zip Code</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            {% for task in uploaded_tasks %}
+            <tr>
+                <td>{{task.title}}</td>
+                <td>
+                    <div class='size_small'>
+                        <img src='{{task.image.url}}'>
+                    </div>
+                </td>
+                <td>{{task.description}}</td>
+                <td>${{task.price}}</td>
+                <td>{{task.zip_code}}</td>
+                <td>
+                    <table>
+                        {% for offer in task.users_bidded.all %}
+                        {% if offer %}
+                        <tr>
+                            <td><a href="/user/{{offer.id}}">{{offer.name}}</a></td>
+                            <td><a href="/decline_offer/{{task.id}}/{{offer.id}}">Decline Offer</a></td> <!--Make me-->
+                            <td><a href="/accept_offer/{{task.id}}/{{offer.id}}">Accept Offer</a></td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </table>
+                </td>
+                <td>
+                    {% if task.status == 0 %}
+                        <a href="/task/edit/{{task.id}}">Edit Task</a>
+                        <a href="/task/delete/{{task.id}}">Delete Task</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        </div>
+        <br><br>
+        <a href="/task/add">Add Task</a>
+        <h4>Shit I'm offering to help with:</h4>
+        <div class='middle size border-bottom'>
+            <table class="table">
+                <tr>
+                    <th>Title</th>
+                    <th>Image</th>
+                    <th>Uploader</th>
+                    <th>Description</th>
+                    <th>Pay</th>
+                    <th>Zip Code</th>
+                    <th>Actions</th>
+                </tr>
+                {% for task in pending_tasks %}
+                {% if logged_user.id|has_bid:task.id %}
+                <tr>
+                    <td>{{task.title}}</td>
+                    <td>
+                        <div class='size_small'>
+                            <img src='{{task.image.url}}'>
+                        </div>
+                    </td>
+                    <td><a href="/user/{{task.uploaded_by.id}}">{{task.uploaded_by.name}}</a></td>
+                    <td>{{task.description}}</td>
+                    <td>${{task.price}}</td>
+                    <td>{{task.zip_code}}</td>
+                    <td>
+                        <a href="/task/{{task.id}}/remove-bid">Remove Offer</a>
+                    </td>
+                </tr>
+                {% endif %} 
+                {% endfor %}
+            </table>
+        </div>
+        <br><br>
+        <h4>Shit I need to help people do:</h4>
+        <div class='border-bottom middle size'>
+        { for task in current_tasks }
+            <p>Title: {task.title}</p>
+            <div class='size_small'>
+                <!-- <img src='{task.image.url}'> -->
+            </div>
+                <p>Description: {task.description}</p>
+                <p>Pay: ${task.price}</p>
+                <p class='border-bottom'>Task Zip Code: {task.zip_code}</p>
+                <br><br>
+        { endfor }
+        </div>
+        <br><br>
+    </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Help me do shit</title>
+    <link rel="stylesheet" href="{% static 'project/styles.css' %}">
+</head>
+<body>
+    <!--Wrapper-->
+    <div id="wrapper">
+        <a href="/home">Home</a>
+        <a href="/user/{{user.id}}">My Profile</a>
+        <a href="/logout">Logout</a>
+        <div class='inline-block'>
+            <h4>Edit Profile:</h4>
+            <br>
+            <!--FORM-->
+            <form action="/user/{{user.id}}/edit/process" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <!--Name-->
+                        <td>Name:</td>
+                        <td><input type='text' name='name' value="{{user.name}}"></td>
+                    </tr>
+                    <tr>
+                        <!--Username-->
+                        <td>Username:</td>
+                        <td><input type='text' name='username' value="{{user.username}}"></td>
+                    </tr>
+                    <tr>
+                        <!--Email-->
+                        <td>Email:</td>
+                        <td><input type='text' name='email' value="{{user.email}}"></td>
+                    </tr>
+                    <tr>
+                        <!--Where-->
+                        <td>Five Digit Zip:</td>
+                        <td><input type='text' name='zip_code' required pattern="[0-9]{5}" value="{{user.zip_code}}"></td>
+                    </tr>
+                    <tr>
+                        <!--Image-->
+                        <td>Add an Image:</td>
+                        <td><input type='file' name='image' accept="image/*"></td>
+                    </tr>
+                </table>
+                <br>
+                <input type="submit" value='Update'>
+            </form>
+        </div>
+        <br>
+        <!--Error Messages-->
+        {% if messages %} 
+            {% for message in messages %}
+                <p class='red'>{{message}}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>

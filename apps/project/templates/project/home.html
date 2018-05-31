@@ -1,0 +1,60 @@
+{% load has_bid %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Placeholder</title>
+    <link rel="stylesheet" href="{% static 'project/styles.css' %}">
+</head>
+<body>
+    <!--Wrapper-->
+    <div id="wrapper">
+        <!--Top-->
+        <div id='header'>
+            <h2 class='inline-block white'>Welcome, {{logged_user.name}}!</h2>
+            <a href="/user/{{request.session.id}}" class='inline-block right_350 white'>My Profile</a>
+            <a href="/logout" class='inline-block white'>Logout</a>
+        </div>
+        <br><br>
+        <h4>Available Tasks:</h4>
+        <div class='middle size_plus'>
+            <table class="table">
+                <tr>
+                    <th>Title</th>
+                    <th>Image</th>
+                    <th>Uploader</th>
+                    <th>Description</th>
+                    <th>Pay</th>
+                    <th>Zip Code</th>
+                    <th>Actions</th>
+                </tr>
+                {% for task in available_tasks %}
+                <tr>
+                    <td>{{task.title}}</td>
+                    <td>
+                        <div class='size_small'>
+                            <img src='{{task.image.url}}'>
+                        </div>
+                    </td>
+                    <td><a href="user/{{task.uploaded_by.id}}">{{task.uploaded_by.name}}</a></td>
+                    <td>{{task.description}}</td>
+                    <td>${{task.price}}</td>
+                    <td>{{task.zip_code}}</td>
+                    <td>
+                        {% if not logged_user.id|has_bid:task.id %}
+                        <a href="/task/{{task.id}}/bid">Help {{task.uploaded_by.name}}</a>
+                        {% else %}
+                        <a href="/task/{{task.id}}/remove-bid">Remove Offer</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <br>
+            <a href="/task/add">Add Task</a>
+        </div>
+</body>
+</html>

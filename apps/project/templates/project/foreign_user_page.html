@@ -1,0 +1,53 @@
+{% load has_bid %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Placeholder</title>
+    <link rel="stylesheet" href="{% static 'project/styles.css' %}">
+</head>
+<body>
+    <!--Wrapper-->
+    <div id="wrapper">
+        <!--Top-->
+        <div id='header'>
+            <h2 class='inline-block white'>{{profile_user.name}}'s Profile</h2>
+            <a href="/home" class='inline-block right_400 white'>Home</a>
+            <a href="/logout" class='inline-block white'>Logout</a>
+        </div>
+        <p>Email: {{profile_user.email}}</p>
+        <h4>{{profile_user.name}}'s' listed tasks:</h4>
+        <div class='middle size'>
+        <table class="table">
+            <tr>
+                <th>Title</th>
+                <th>Image</th>
+                <th>Description</th>
+                <th>Pay</th>
+                <th>Zip Code</th>
+                <th>Actions</th>
+            </tr>
+            {% for task in uploaded_tasks %}
+            <tr>
+                <td>{{task.title}}</td>
+                <td>
+                    <div class='size_small'>
+                        <img src='{{task.image.url}}'>
+                    </div>
+                </td>
+                <td>{{task.description}}</td>
+                <td>${{task.price}}</td>
+                <td>{{task.zip_code}}</td>
+                <td>
+                    <a href="/task/{{task.id}}/bid">Help {{task.uploaded_by.name}}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        </div>
+    </div>
+</body>
+</html>

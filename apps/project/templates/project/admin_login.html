@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Placeholder</title>
+    <link rel="stylesheet" href="{% static 'project/styles.css' %}">
+</head>
+<body>
+    <!--Wrapper-->
+    <div id="wrapper">
+        <!--Login Side-->
+        <div id="login" class='inline-block'>
+            <h4>Admin Portal</h4>
+            <br>
+            <!--Send to /login-->
+            <form action="/admin/login" method="post">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <!--Email-->
+                        <td>Username:</td>
+                        <td><input type='text' name='username'></td>
+                    </tr>
+                    <tr>
+                        <!--Password-->
+                        <td>Password:</td>
+                        <td><input type='password' name='password'></td>
+                    </tr>
+                </table>
+                <br>
+                <input type="submit" value='Login'>
+            </form>
+        </div>
+        <br>
+        <!--Error Messages-->
+        {% if messages %} 
+            {% for message in messages %}
+                <p class='red'>{{message}}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>

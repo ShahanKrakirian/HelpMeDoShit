@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Placeholder</title>
+    <link rel="stylesheet" href="{% static 'project/styles.css' %}">
+</head>
+<body>
+    <!--Wrapper-->
+    <div id="wrapper">
+        <h1>Welcome!</h1>
+        <!--Register Side-->
+        <div id="register" class='inline-block'>
+            <h4>Register</h4>
+            <br>
+            <!--Send to /register-->
+            <form action="/register" method="post">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <!--Name-->
+                        <td>Name:</td>
+                        <td><input type='text' name='name'></td>
+                    </tr>
+                    <tr>
+                        <!--Alias-->
+                        <td>Username:</td>
+                        <td><input type='text' name='username'></td>
+                    </tr>
+                    <tr>
+                        <!--Email-->
+                        <td>Email:</td>
+                        <td><input type='text' name='email'></td>
+                    </tr>
+                        <!--Password-->
+                        <td>Password:</td>
+                        <td><input type='password' name='password'></td>
+                    </tr>
+                    <tr>
+                        <!--Confirm Password-->
+                        <td>Confirm Password:</td>
+                        <td><input type='password' name='confirm_password'></td>
+                    </tr>
+                    <tr>
+                        <!--Zip-->
+                        <td>Five Digit Zip:</td>
+                        <td><input type='text' name='zip' required pattern="[0-9]{5}"></td>
+                    </tr>
+                </table>
+                <br>
+                <!--Submit-->
+                <input type="submit" value='Register'>
+            </form>
+        </div>
+        <!--Login Side-->
+        <div id="login" class='inline-block'>
+            <h4>Login</h4>
+            <br>
+            <!--Send to /login-->
+            <form action="/login" method="post">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <!--Email-->
+                        <td>Username:</td>
+                        <td><input type='text' name='username'></td>
+                    </tr>
+                    <tr>
+                        <!--Password-->
+                        <td>Password:</td>
+                        <td><input type='password' name='password'></td>
+                    </tr>
+                </table>
+                <br>
+                <input type="submit" value='Login'>
+            </form>
+        </div>
+        <br>
+        <!--Error Messages-->
+        {% if messages %} 
+            {% for message in messages %}
+                <p class='red'>{{message}}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>
