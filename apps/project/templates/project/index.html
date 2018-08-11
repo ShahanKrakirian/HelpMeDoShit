@@ -6,9 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Placeholder</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'project/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'project/bootstrap.min.css' %}">
+    <script src="{% static 'project/bootstrap.min.js' %}"></script>
 </head>
-<body>
+<body class="background">
     <!--Wrapper-->
     <div id="wrapper">
         <h1>Welcome!</h1>
@@ -22,37 +25,31 @@
                 <table>
                     <tr>
                         <!--Name-->
-                        <td>Name:</td>
-                        <td><input type='text' name='name'></td>
+                        <td><input type='text' name='name' placeholder="Name"></td>
                     </tr>
                     <tr>
                         <!--Alias-->
-                        <td>Username:</td>
-                        <td><input type='text' name='username'></td>
+                        <td><input type='text' name='username' placeholder="Username"></td>
                     </tr>
                     <tr>
                         <!--Email-->
-                        <td>Email:</td>
-                        <td><input type='text' name='email'></td>
+                        <td><input type='text' name='email' placeholder="Email"></td>
                     </tr>
                         <!--Password-->
-                        <td>Password:</td>
-                        <td><input type='password' name='password'></td>
+                        <td><input type='password' name='password' placeholder="Password"></td>
                     </tr>
                     <tr>
                         <!--Confirm Password-->
-                        <td>Confirm Password:</td>
-                        <td><input type='password' name='confirm_password'></td>
+                        <td><input type='password' name='confirm_password' placeholder="Confirm Password"></td>
                     </tr>
                     <tr>
                         <!--Zip-->
-                        <td>Five Digit Zip:</td>
-                        <td><input type='text' name='zip' required pattern="[0-9]{5}"></td>
+                        <td><input type='text' name='zip' required pattern="[0-9]{5}" placeholder="Five Digit Zip"></td>
                     </tr>
                 </table>
                 <br>
                 <!--Submit-->
-                <input type="submit" value='Register'>
+                <button class="btn" type="submit">Register</button>
             </form>
         </div>
         <!--Login Side-->
@@ -65,17 +62,15 @@
                 <table>
                     <tr>
                         <!--Email-->
-                        <td>Username:</td>
-                        <td><input type='text' name='username'></td>
+                        <td><input type='text' name='username' placeholder="Username"></td>
                     </tr>
                     <tr>
                         <!--Password-->
-                        <td>Password:</td>
-                        <td><input type='password' name='password'></td>
+                        <td><input type='password' name='password' placeholder="Password"></td>
                     </tr>
                 </table>
                 <br>
-                <input type="submit" value='Login'>
+                <button class="btn" type="submit">Login</button>
             </form>
         </div>
         <br>
