@@ -6,11 +6,17 @@ from django.contrib import messages
 from models import *
 import bcrypt
 
-def index(request): #Login
+def index(request): #Registration
 
     if 'id' in request.session: #if logged in
         return redirect('/home')
     return render(request, 'project/index.html')
+
+def login(request): 
+
+    if 'id' in request.session: #if logged in
+        return redirect('/home')
+    return render(request, 'project/login.html')
 
 def home(request): #Home
 

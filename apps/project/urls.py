@@ -6,6 +6,7 @@ urlpatterns = [
     url(r'^$', views.index),
     url(r'^register$', views.register),
     url(r'^login$', views.login),
+    url(r'^login/process$', views.login),
     url(r'^logout$', views.logout),
 
     #Admin Login/Portal
