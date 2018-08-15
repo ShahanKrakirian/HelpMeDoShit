@@ -7,28 +7,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Placeholder</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+    </script>
+    <script src="{% static 'project/bootstrap.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'project/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'project/bootstrap.min.css' %}">
 </head>
-<body>
-    <!--Wrapper-->
-    <div id="wrapper">
-        <!--Top-->
-        <div id='header'>
-            <h2 class='inline-block white'>Welcome, {{logged_user.name}}!</h2>
-            <a href="/user/{{request.session.id}}" class='inline-block right_350 white'>My Profile</a>
-            <a href="/logout" class='inline-block white'>Logout</a>
+<body class="background background_white fixed-navbar-padding">
+
+    <!--Nav-->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/home">Helping Hand</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link font-size-13" href="/user/{{request.session.id}}">My Profile <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link font-size-13" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <br><br>
-        <h4>Available Tasks:</h4>
-        <div class='middle size_plus'>
-            <table class="table">
+    </nav>
+
+    <br><br>
+
+    <div class="row justify-content-center">
+        <div class="col col-md-2">
+                <a class="font-size-11 left-24" href="/task/add">Add Task</a>
+                <br><br>
+                <ul class="font-size-11">
+                    <li>Order By Uploader (Soon)</li>
+                    <li>Order By Pay (Soon)</li>
+                    <li>Order By Zip Code (Soon)</li>
+                </ul>
+        </div>
+        <div class="col col-md-7">
+            <table class="table table-sm table-responsive font-size-11 overflow background_gray">
                 <tr>
                     <th>Title</th>
-                    <th>Image</th>
+                    <th class="text-center">Image</th>
                     <th>Uploader</th>
                     <th>Description</th>
                     <th>Pay</th>
-                    <th>Zip Code</th>
+                    <th>Zip</th>
                     <th>Actions</th>
                 </tr>
                 {% for task in available_tasks %}
@@ -53,8 +84,22 @@
                 </tr>
                 {% endfor %}
             </table>
-            <br>
-            <a href="/task/add">Add Task</a>
         </div>
+    </div>
+
+    <br><br><br>
+
+    <!-- Footer -->
+    <footer class="page-footer font-small blue justify-content-center background_gray align-middle">
+        <div class="footer-copyright text-center py-3">
+            <p class="text-left font-size-11 inline-block">Created by Shahan Krakirian</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <p class="text-right font-size-11 inline-block">
+                <a href="https://www.linkedin.com/in/shahan-krakirian/">LinkedIn</a>&nbsp;
+                <a href="https://github.com/ShahanKrakirian">GitHub</a>&nbsp;
+                <a href="https://shahankrakirian.com">Portfolio</a>
+            </p>
+        </div>              
+    </footer>
+
 </body>
 </html>
