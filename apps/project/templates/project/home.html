@@ -41,9 +41,10 @@
 
     <br><br>
 
-    <div class="row justify-content-center">
-        <div class="col col-md-2">
-                <a class="font-size-11 left-24" href="/task/add">Add Task</a>
+    <div id="home-row" class="row justify-content-center">
+        <div class="col col-md-2 offset-md-1">
+                <!-- Modal Trigger -->
+                <a class="font-size-11 left-24" href="/task/add" data-toggle="modal" data-target="#exampleModalCenter">Create a Task</a>
                 <br><br>
                 <ul class="font-size-11">
                     <li>Order By Uploader (Soon)</li>
@@ -51,22 +52,24 @@
                     <li>Order By Zip Code (Soon)</li>
                 </ul>
         </div>
-        <div class="col col-md-7">
-            <table class="table table-sm table-responsive font-size-11 overflow background_gray">
-                <tr>
-                    <th>Title</th>
-                    <th class="text-center">Image</th>
-                    <th>Uploader</th>
-                    <th>Description</th>
-                    <th>Pay</th>
-                    <th>Zip</th>
-                    <th>Actions</th>
-                </tr>
+        <div class="col col-md-7 overflow">
+            <table class="table table-sm table-responsive font-size-11">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Title</th>
+                        <th class="text-center">Image</th>
+                        <th>Uploader</th>
+                        <th class="width-30">Description</th>
+                        <th>Pay</th>
+                        <th>Zip</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
                 {% for task in available_tasks %}
                 <tr>
                     <td>{{task.title}}</td>
                     <td>
-                        <div class='size_small'>
+                        <div class='size_small image-size'>
                             <img src='{{task.image.url}}'>
                         </div>
                     </td>
@@ -100,6 +103,52 @@
             </p>
         </div>              
     </footer>
+
+      
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Create a Task</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <div class="modal-body">
+            <form class="font-size-11" id="createTask" action="/task/add/process" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type='text' name='title' placeholder="Title" pattern=".{4,}" required title="4 characters minimum">
+                </div>
+                <div class="form-group">
+                    <textarea name="description" cols="50" rows="10" placeholder="Description" pattern=".{10,}" required title="10 characters minimum"></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="number" name="pay" min=".01" step=".01" placeholder="Pay">
+                </div>
+                <div class="form-group">
+                    <input type='text' name='zip_code' required pattern="[0-9]{5}" placeholder="Five Digit Zip">
+                </div>
+                <div class="form-control-file">
+                    Add an Image:
+                    <input type='file' name='image' accept="image/*">
+                </div>
+            </form>
+            <!--Error Messages-->
+            {% if messages %} 
+                {% for message in messages %}
+                    <p class='red'>{{message}}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+            <button class="btn btn-sm btn-info" form="createTask" type="submit" value='Create Task'>Create Task</button>
+        </div>
+        </div>
+    </div>
+    </div>    
 
 </body>
 </html>
