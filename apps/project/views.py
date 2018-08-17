@@ -10,23 +10,27 @@ def index(request): #Registration
 
     if 'id' in request.session: #if logged in
         return redirect('/home')
+
     return render(request, 'project/index.html')
 
 def login(request): 
 
     if 'id' in request.session: #if logged in
         return redirect('/home')
+
     return render(request, 'project/login.html')
 
 def home(request): #Home
 
     if not 'id' in request.session: #if not logged in
         return redirect('/')
+
     user = User.objects.get(id=request.session['id'])
     context = {
         'logged_user': User.objects.get(id=request.session['id']),
         'available_tasks': Task.objects.exclude(uploaded_by=user),
     }
+
     return render(request, 'project/home.html', context)
 
 def logout(request): #Logout
@@ -59,6 +63,7 @@ def user_profile(request, user_id): #User_Profile
         context = {
             'profile_user': page_user,
             'uploaded_tasks': Task.objects.filter(uploaded_by=page_user),
+            'logged_user': current_user
         }
 
         return render(request, 'project/foreign_user_page.html', context)

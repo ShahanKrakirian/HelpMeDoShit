@@ -7,95 +7,149 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Placeholder</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+    </script>
+    <script src="{% static 'project/bootstrap.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'project/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'project/bootstrap.min.css' %}">
 </head>
-<body>
-    <!--Wrapper-->
-    <div id="wrapper">
-        <!--Top-->
-        <div id='header'>
-            <h2 class='inline-block white'>Your Profile</h2>
-            <a href="/home" class='inline-block right_550 white'>Home</a>
-            <a href="/logout" class='inline-block white'>Logout</a>
-        </div>
-        <div class="profile">
+<body class="background background_white fixed-navbar-padding">
+    
+    <!--Nav-->
+    {% include "./nav.html" %}
+
+    <br><br>
+
+    <div class="row justify-center text-align-center-sm-and-down home-row">
+        <div class="col col-md-4 col-sm-12">
             <div class='size_small inline-block margin-top'>
                 <img src='{{logged_user.image.url}}'>
             </div>
-            <div class="profile_info inline-block">
-                <p class='inline-block neg_margin'>Name: {{logged_user.name}}</p>
-                <p class='inline-block neg_margin'>Username: {{logged_user.username}}</p>
-                <p class='inline-block neg_margin'>Email: {{logged_user.email}}</p>
-                <p class='inline-block neg_margin'>Zip Code: {{logged_user.zip_code}}</p>
-                <p><a class='inline-block neg_margin' href="/user/{{logged_user.id}}/edit">Edit Profile</a></p>
-            </div>
+            <br class="display-none-sm-and-down"><br class="display-none-sm-and-down">
+            <ul class="font-size-11 no-padding right-15">
+                <li class='inline-block'>Name: {{logged_user.name}}</li><br>
+                <li class='inline-block'>Username: {{logged_user.username}}</li><br>
+                <li class='inline-block'>Email: {{logged_user.email}}</li><br>
+                <li class='inline-block'>Zip: {{logged_user.zip_code}}</li><br>
+                <li class='inline-block'><a href="/user/{{logged_user.id}}/edit" data-toggle="modal" data-target="#editProfileModal">Edit Profile</a></li><br><br>
+                <li class="inline-block"><a href="/task/add" data-toggle="modal" data-target="#createTaskModal">Create a Task</a></li>
+            </ul>
         </div>
-        <h4>Shit I need to do:</h4>
-        <div class='middle size border-bottom'>
-        <table class="table">
-            <tr>
-                <th>Title</th>
-                <th>Image</th>
-                <th>Description</th>
-                <th>Pay</th>
-                <th>Zip Code</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-            {% for task in uploaded_tasks %}
-            <tr>
-                <td>{{task.title}}</td>
-                <td>
-                    <div class='size_small'>
-                        <img src='{{task.image.url}}'>
-                    </div>
-                </td>
-                <td>{{task.description}}</td>
-                <td>${{task.price}}</td>
-                <td>{{task.zip_code}}</td>
-                <td>
-                    <table>
-                        {% for offer in task.users_bidded.all %}
-                        {% if offer %}
-                        <tr>
-                            <td><a href="/user/{{offer.id}}">{{offer.name}}</a></td>
-                            <td><a href="/decline_offer/{{task.id}}/{{offer.id}}">Decline Offer</a></td> <!--Make me-->
-                            <td><a href="/accept_offer/{{task.id}}/{{offer.id}}">Accept Offer</a></td>
-                        </tr>
-                        {% endif %}
-                        {% endfor %}
-                    </table>
-                </td>
-                <td>
-                    {% if task.status == 0 %}
-                        <a href="/task/edit/{{task.id}}">Edit Task</a>
-                        <a href="/task/delete/{{task.id}}">Delete Task</a>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-        </div>
-        <br><br>
-        <a href="/task/add">Add Task</a>
-        <h4>Shit I'm offering to help with:</h4>
-        <div class='middle size border-bottom'>
-            <table class="table">
+        <div class="col col-md-7 col-sm-12 text-align-center-sm-and-down">
+            <h6>My uploaded tasks:</h6>
+            <table class="table table-responsive table-sm font-size-11 container-sm-and-down">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Title</th>
+                        <th class="text-center">Image</th>
+                        <th class="width-30">Description</th>
+                        <th>Pay</th>
+                        <th>Zip</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                {% for task in uploaded_tasks %}
                 <tr>
-                    <th>Title</th>
-                    <th>Image</th>
-                    <th>Uploader</th>
-                    <th>Description</th>
-                    <th>Pay</th>
-                    <th>Zip Code</th>
-                    <th>Actions</th>
+                    <td>{{task.title}}</td>
+                    <td>
+                        <div class='size_small image-size'>
+                            <img src='{{task.image.url}}'>
+                        </div>
+                    </td>
+                    <td>{{task.description}}</td>
+                    <td>${{task.price}}</td>
+                    <td>{{task.zip_code}}</td>
+                    <td>
+                        <table>
+                            {% for offer in task.users_bidded.all %}
+                            {% if offer %}
+                            <tr>
+                                <td><a href="/user/{{offer.id}}">{{offer.name}}</a></td>
+                                <td><a href="/decline_offer/{{task.id}}/{{offer.id}}">Decline Offer</a></td> <!--Make me-->
+                                <td><a href="/accept_offer/{{task.id}}/{{offer.id}}">Accept Offer</a></td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </table>
+                    </td>
+                    <td>
+                        {% if task.status == 0 %}
+                            <a href="/task/edit/{{task.id}}" data-toggle="modal" data-target="#editTaskModal">Edit Task</a>
+
+                            <!-- Create Task Modal -->
+                            <div class="modal fade" id="editTaskModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header text-center">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Edit Task</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        <div class="modal-body text-align-center">
+                                            <form class="font-size-11" id="editTask" action="/task/edit/process/{{task.id}}" method="post" enctype="multipart/form-data">
+                                                {% csrf_token %}
+                                                <div class="formStyle">
+                                                    <label for="title">Title:</label><input type='text' name='title' value="{{task.title}}" placeholder="Title" pattern=".{4,}" required title="4 characters minimum"><br>
+                                                    <label for="description">Description:</label><textarea name="description" cols="30" rows="7" placeholder="Description" pattern=".{10,}" required title="10 characters minimum">{{task.description}}</textarea><br>
+                                                    <label for="pay">Pay:</label><input type="number" value="{{task.price}}" name="pay" min=".01" step=".01" placeholder="Pay"><br>
+                                                    <label for="zip_code">Five Digit Zip:</label><input type='text' value="{{task.zip_code}}" name='zip_code' required pattern="[0-9]{5}" placeholder="Five Digit Zip"><br>
+                                                    <label for="image">Add an image:</label><input type='file' name='image' accept="image/*"><br>
+                                                </div>
+                                            </form>
+                                            <!--Error Messages-->
+                                            {% if messages %} 
+                                                {% for message in messages %}
+                                                    <p class='red'>{{message}}</p>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                                            <button class="btn btn-sm btn-info" form="editTask" type="submit" value='Edit Task'>Edit Task</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <!--End Modal-->   
+
+                            <a href="/task/delete/{{task.id}}">Delete Task</a>
+                        {% endif %}
+                    </td>
                 </tr>
+                {% endfor %}
+            </table>            
+        </div>
+    </div>
+        
+    <br><br>
+
+    <div class="row text-align-center-sm-and-down justify-center home-row">
+        <div class="col col-md-7 offset-md-4 col-sm-12 text-align-center-sm-and-down">
+            <h6>Tasks I've offered to help with:</h6>
+            <table class="table table-responsive table-sm font-size-11 container-sm-and-down">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Title</th>
+                        <th class="text-center">Image</th>
+                        <th>Uploader</th>
+                        <th class="width-30">Description</th>
+                        <th>Pay</th>
+                        <th>Zip</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
                 {% for task in pending_tasks %}
                 {% if logged_user.id|has_bid:task.id %}
                 <tr>
                     <td>{{task.title}}</td>
                     <td>
-                        <div class='size_small'>
+                        <div class='size_small image-size'>
                             <img src='{{task.image.url}}'>
                         </div>
                     </td>
@@ -111,21 +165,121 @@
                 {% endfor %}
             </table>
         </div>
-        <br><br>
-        <h4>Shit I need to help people do:</h4>
-        <div class='border-bottom middle size'>
-        { for task in current_tasks }
-            <p>Title: {task.title}</p>
-            <div class='size_small'>
-                <!-- <img src='{task.image.url}'> -->
-            </div>
-                <p>Description: {task.description}</p>
-                <p>Pay: ${task.price}</p>
-                <p class='border-bottom'>Task Zip Code: {task.zip_code}</p>
-                <br><br>
-        { endfor }
-        </div>
-        <br><br>
     </div>
+
+    <br><br>
+
+    <div class="row text-align-center-sm-and-down justify-center home-row">
+        <div class="col col-md-7 offset-md-4 col-sm-12 text-align-center-sm-and-down">
+            <h6>Tasks that I'm approved to help with:</h6>
+            <table class="table table-responsive table-sm font-size-11 container-sm-and-down">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Title</th>
+                        <th class="text-center">Image</th>
+                        <th>Uploader</th>
+                        <th class="width-30">Description</th>
+                        <th>Pay</th>
+                        <th>Zip</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                {% for task in current_tasks %}
+                <tr>
+                    <td>{task.title}</td>
+                    <td>
+                        <div class='size_small image-size'>
+                            <img src='{task.image.url}'>
+                        </div>
+                    </td>
+                    <td><a href="/user/{{task.uploaded_by.id}}">{task.uploaded_by.name}</a></td>
+                    <td>{task.description}</td>
+                    <td>${task.price}</td>
+                    <td>{task.zip_code}</td>
+                    <td>
+                        <a href="#">Contact Task Uploader ??????? Work on this.</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <br><br>
+
+    {% include "./footer.html" %}
+
+    <!-- Create Task Modal -->
+    <div class="modal fade" id="createTaskModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Create a Task</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <div class="modal-body text-align-center">
+                <form class="font-size-11" id="createTask" action="/task/add/process" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="formStyle">
+                        <label for="title">Title:</label><input type='text' name='title' placeholder="Title" pattern=".{4,}" required title="4 characters minimum"><br>
+                        <label for="description">Description:</label><textarea name="description" cols="30" rows="7" placeholder="Description" pattern=".{10,}" required title="10 characters minimum"></textarea><br>
+                        <label for="pay">Pay:</label><input type="number" name="pay" min=".01" step=".01" placeholder="Pay"><br>
+                        <label for="zip_code">Five Digit Zip:</label><input type='text' name='zip_code' required pattern="[0-9]{5}" placeholder="Five Digit Zip"><br>
+                        <label for="image">Add an image:</label><input type='file' name='image' accept="image/*"><br>
+                    </div>
+                </form>
+                <!--Error Messages-->
+                {% if messages %} 
+                    {% for message in messages %}
+                        <p class='red'>{{message}}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                <button class="btn btn-sm btn-info" form="createTask" type="submit" value='Create Task'>Create Task</button>
+            </div>
+            </div>
+        </div>
+    </div>    
+
+    <!-- Edit Profile Modal -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Update Profile</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <div class="modal-body text-align-center">
+                <form id="editProfile" class="font-size-11" action="/user/{{logged_user.id}}/edit/process" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="formStyle">
+                        <label for="name">Name:</label><input type='text' name='name' value="{{logged_user.name}}" pattern=".{3,}" required title="3 characters minimum"><br>
+                        <label for="username">Username:</label><input type='text' name='username' value="{{logged_user.username}}" pattern=".{3,}" required title="3 characters minimum"><br>
+                        <label for="email">Email:</label><input type='email' name='email' value="{{logged_user.email}}" required><br>
+                        <label for="zip_code">Five Digit Zip:</label><input type='text' name='zip_code' required pattern="[0-9]{5}" value="{{logged_user.zip_code}}"><br>
+                        <label for="image">Upload an image:</label><input type='file' name='image' accept="image/*"><br>
+                    </div>
+                </form>
+                <!--Error Messages-->
+                {% if messages %} 
+                    {% for message in messages %}
+                        <p class='red'>{{message}}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                <button class="btn btn-sm btn-info" form="editProfile" type="submit">Update</button>
+            </div>
+            </div>
+        </div>
+    </div>    
+
 </body>
 </html>

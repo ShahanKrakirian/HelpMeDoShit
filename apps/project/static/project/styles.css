@@ -50,10 +50,6 @@
 .image{
     width:100%;
 }
-.size_small{
-    height:100px;
-    width:200px;
-}
 img{
     height: 100%; 
     width: 100%; 
@@ -97,6 +93,9 @@ img{
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.text-align-center{
+    text-align: center;
+}
 
 /* Backgrounds */
 
@@ -130,12 +129,16 @@ input{
     border:none !important;
     height: 25px !important;
 }
-.left-24{
-    margin-left:24px;
-}
-#home-row{
-    height: 370px;
+.home-row{
+    height: 300px;
     overflow: scroll;
+}
+.margin-top-12{
+    margin-top:12px;
+}
+.size_small{
+    height:100px;
+    width:200px;
 }
 
 
@@ -153,6 +156,12 @@ input{
 .overflow{
     overflow: scroll;
 }
+.y-overflow{
+    overflow-y:scroll;
+}
+.vertical-align-middle{
+    vertical-align: middle;
+}
 
 /* Table */ 
 
@@ -163,9 +172,57 @@ table tr:hover td {
     width: 30%;
 }
 
+/* Forms */ 
+
+label{
+    font-weight:bold;
+}
+.formStyle label{
+    text-align:right;
+    padding-right:10px;
+    width:100px;
+}
+.formStyle input{
+    width:200px;
+}
+.formStyle{
+    padding:10px;
+}
+
+
 /* Images */ 
 
 .image-size{
     width: 100px;
     height:100px;
+}
+
+/* Custom Media Queries */ 
+
+@media only screen and (max-width: 767px) {
+    .no-padding{
+        padding-left: none;
+    }
+    .text-align-center-sm-and-down{
+        text-align:center;
+    }
+    .display-none-sm-and-down{
+        display:none;
+    }
+    .container-sm-and-down{
+        width: 100%;
+        padding-right:15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left:  auto;
+    }
+    .left-24{
+        margin-left:24px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .right-15{
+        margin-left: 15px;
+    }
 }

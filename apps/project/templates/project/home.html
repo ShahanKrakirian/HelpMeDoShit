@@ -20,40 +20,25 @@
 <body class="background background_white fixed-navbar-padding">
 
     <!--Nav-->
-    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/home">Helping Hand</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link font-size-13" href="/user/{{request.session.id}}">My Profile <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link font-size-13" href="/logout">Logout</a>
-                    </li>
-                </ul>
+    {% include "./nav.html" %}
+
+    <br>
+
+    <div class="row home-row justify-center text-align-center-sm-and-down">
+        <div class="col col-md-3 col-sm-12">
+            <!-- Modal Trigger -->
+            <br><br>
+            <a class="font-size-11 right-15 no-padding" href="/task/add" data-toggle="modal" data-target="#createTaskModal">Create a Task</a>
+            <br><br>
+            <div class="font-size-11 right-15 no-padding">
+                <p>Order By Uploader (Soon)</p>
+                <p>Order By Pay (Soon)</p>
+                <p>Order By Zip Code (Soon)</p>
             </div>
         </div>
-    </nav>
-
-    <br><br>
-
-    <div id="home-row" class="row justify-content-center">
-        <div class="col col-md-2 offset-md-1">
-                <!-- Modal Trigger -->
-                <a class="font-size-11 left-24" href="/task/add" data-toggle="modal" data-target="#exampleModalCenter">Create a Task</a>
-                <br><br>
-                <ul class="font-size-11">
-                    <li>Order By Uploader (Soon)</li>
-                    <li>Order By Pay (Soon)</li>
-                    <li>Order By Zip Code (Soon)</li>
-                </ul>
-        </div>
-        <div class="col col-md-7 overflow">
-            <table class="table table-sm table-responsive font-size-11">
+        <div class="col col-md-7 col-sm-12">
+            <h6>Available tasks:</h6>
+            <table class="table table-sm table-responsive font-size-11 container-sm-and-down">
                 <thead class="thead-light">
                     <tr>
                         <th>Title</th>
@@ -92,21 +77,11 @@
 
     <br><br><br>
 
-    <!-- Footer -->
-    <footer class="page-footer font-small blue justify-content-center background_gray align-middle">
-        <div class="footer-copyright text-center py-3">
-            <p class="text-left font-size-11 inline-block">Created by Shahan Krakirian</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <p class="text-right font-size-11 inline-block">
-                <a href="https://www.linkedin.com/in/shahan-krakirian/">LinkedIn</a>&nbsp;
-                <a href="https://github.com/ShahanKrakirian">GitHub</a>&nbsp;
-                <a href="https://shahankrakirian.com">Portfolio</a>
-            </p>
-        </div>              
-    </footer>
+    {% include "./footer.html" %}
 
       
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <!-- Create Task Modal -->
+    <div class="modal fade" id="createTaskModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">
@@ -115,39 +90,66 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-            <div class="modal-body">
-            <form class="font-size-11" id="createTask" action="/task/add/process" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="form-group">
-                    <input type='text' name='title' placeholder="Title" pattern=".{4,}" required title="4 characters minimum">
-                </div>
-                <div class="form-group">
-                    <textarea name="description" cols="50" rows="10" placeholder="Description" pattern=".{10,}" required title="10 characters minimum"></textarea>
-                </div>
-                <div class="form-group">
-                    <input type="number" name="pay" min=".01" step=".01" placeholder="Pay">
-                </div>
-                <div class="form-group">
-                    <input type='text' name='zip_code' required pattern="[0-9]{5}" placeholder="Five Digit Zip">
-                </div>
-                <div class="form-control-file">
-                    Add an Image:
-                    <input type='file' name='image' accept="image/*">
-                </div>
-            </form>
-            <!--Error Messages-->
-            {% if messages %} 
-                {% for message in messages %}
-                    <p class='red'>{{message}}</p>
-                {% endfor %}
-            {% endif %}
+            <div class="modal-body text-align-center">
+                <form class="font-size-11" id="createTask" action="/task/add/process" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="formStyle">
+                        <label for="title">Title:</label><input type='text' name='title' placeholder="Title" pattern=".{4,}" required title="4 characters minimum"><br>
+                        <label for="description">Description:</label><textarea name="description" cols="30" rows="7" placeholder="Description" pattern=".{10,}" required title="10 characters minimum"></textarea><br>
+                        <label for="pay">Pay:</label><input type="number" name="pay" min=".01" step=".01" placeholder="Pay"><br>
+                        <label for="zip_code">Five Digit Zip:</label><input type='text' name='zip_code' required pattern="[0-9]{5}" placeholder="Five Digit Zip"><br>
+                        <label for="image">Add an image:</label><input type='file' name='image' accept="image/*"><br>
+                    </div>
+                </form>
+                <!--Error Messages-->
+                {% if messages %} 
+                    {% for message in messages %}
+                        <p class='red'>{{message}}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                <button class="btn btn-sm btn-info" form="createTask" type="submit" value='Create Task'>Create Task</button>
+            </div>
+            </div>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-            <button class="btn btn-sm btn-info" form="createTask" type="submit" value='Create Task'>Create Task</button>
+    </div>    
+
+    <!-- Edit Profile Modal -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Update Profile</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <div class="modal-body text-align-center">
+                <form id="editProfile" class="font-size-11" action="/user/{{logged_user.id}}/edit/process" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="formStyle">
+                        <label for="name">Name:</label><input type='text' name='name' value="{{logged_user.name}}" pattern=".{3,}" required title="3 characters minimum"><br>
+                        <label for="username">Username:</label><input type='text' name='username' value="{{logged_user.username}}" pattern=".{3,}" required title="3 characters minimum"><br>
+                        <label for="email">Email:</label><input type='email' name='email' value="{{logged_user.email}}" required><br>
+                        <label for="zip_code">Five Digit Zip:</label><input type='text' name='zip_code' required pattern="[0-9]{5}" value="{{logged_user.zip_code}}"><br>
+                        <label for="image">Upload an image:</label><input type='file' name='image' accept="image/*"><br>
+                    </div>
+                </form>
+                <!--Error Messages-->
+                {% if messages %} 
+                    {% for message in messages %}
+                        <p class='red'>{{message}}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                <button class="btn btn-sm btn-info" form="editProfile" type="submit">Update</button>
+            </div>
+            </div>
         </div>
-        </div>
-    </div>
     </div>    
 
 </body>

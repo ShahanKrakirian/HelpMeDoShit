@@ -7,47 +7,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Placeholder</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+    </script>
+    <script src="{% static 'project/bootstrap.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'project/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'project/bootstrap.min.css' %}">
 </head>
-<body>
-    <!--Wrapper-->
-    <div id="wrapper">
-        <!--Top-->
-        <div id='header'>
-            <h2 class='inline-block white'>{{profile_user.name}}'s Profile</h2>
-            <a href="/home" class='inline-block right_400 white'>Home</a>
-            <a href="/logout" class='inline-block white'>Logout</a>
+<body class="background background_white fixed-navbar-padding">
+
+    {% include "./nav.html" %}
+
+    <br><br>
+
+    <div class="row home-row justify-content-center text-align-center-sm-and-down">
+        <div class="col col-md-4 col-sm-12">
+            <div class="size_small inline-block margin-top">
+                <img src="{{profile_user.image.url}}" alt="{{profile_user.name}}">
+            </div>
+            <br class="display-none-sm-and-down"><br class="display-none-sm-and-down">
+            <ul class="font-size-11 no-padding">
+                <li class='inline-block'>Name: {{profile_user.name}}</li><br>
+                <li class='inline-block'>Username: {{profile_user.username}}</li><br>
+                <li class='inline-block'>Email: {{profile_user.email}}</li><br>
+                <li class='inline-block'>Zip: {{profile_user.zip_code}}</li><br>
+            </ul>
         </div>
-        <p>Email: {{profile_user.email}}</p>
-        <h4>{{profile_user.name}}'s' listed tasks:</h4>
-        <div class='middle size'>
-        <table class="table">
-            <tr>
-                <th>Title</th>
-                <th>Image</th>
-                <th>Description</th>
-                <th>Pay</th>
-                <th>Zip Code</th>
-                <th>Actions</th>
-            </tr>
-            {% for task in uploaded_tasks %}
-            <tr>
-                <td>{{task.title}}</td>
-                <td>
-                    <div class='size_small'>
-                        <img src='{{task.image.url}}'>
-                    </div>
-                </td>
-                <td>{{task.description}}</td>
-                <td>${{task.price}}</td>
-                <td>{{task.zip_code}}</td>
-                <td>
-                    <a href="/task/{{task.id}}/bid">Help {{task.uploaded_by.name}}</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+        <div class="col col-md-7 col-sm-12">
+            <h6>{{profile_user.name}}'s uploaded tasks:</h6>
+            <table class="table table-responsive table-sm font-size-11 container-sm-and-down">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Title</th>
+                        <th class="text-center">Image</th>
+                        <th class="width-30">Description</th>
+                        <th>Pay</th>
+                        <th>Zip</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                {% for task in uploaded_tasks %}
+                <tr>
+                    <td>{{task.title}}</td>
+                    <td>
+                        <div class='size_small image-size'>
+                            <img src='{{task.image.url}}'>
+                        </div>
+                    </td>
+                    <td>{{task.description}}</td>
+                    <td>${{task.price}}</td>
+                    <td>{{task.zip_code}}</td>
+                    <td>
+                        {% if not logged_user.id|has_bid:task.id %}
+                        <a href="/task/{{task.id}}/bid">Help {{task.uploaded_by.name}}</a>
+                        {% else %}
+                        <a href="/task/{{task.id}}/remove-bid">Remove Offer</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
     </div>
+    
+    <br><br><br>
+
+    {% include "./footer.html" %}
+
+    <!-- <p>Email: {{profile_user.email}}</p>
+    <h4>{{profile_user.name}}'s' listed tasks:</h4>
+    <div class='middle size'>
+    <table class="table">
+        <tr>
+            <th>Title</th>
+            <th>Image</th>
+            <th>Description</th>
+            <th>Pay</th>
+            <th>Zip Code</th>
+            <th>Actions</th>
+        </tr>
+        {% for task in uploaded_tasks %}
+        <tr>
+            <td>{{task.title}}</td>
+            <td>
+                <div class='size_small'>
+                    <img src='{{task.image.url}}'>
+                </div>
+            </td>
+            <td>{{task.description}}</td>
+            <td>${{task.price}}</td>
+            <td>{{task.zip_code}}</td>
+            <td>
+                <a href="/task/{{task.id}}/bid">Help {{task.uploaded_by.name}}</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div> -->
+
 </body>
 </html>
