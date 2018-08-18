@@ -29,7 +29,7 @@
                 <img src="{{profile_user.image.url}}" alt="{{profile_user.name}}">
             </div>
             <br class="display-none-sm-and-down"><br class="display-none-sm-and-down">
-            <ul class="font-size-11 no-padding">
+            <ul class="font-size-11 no-padding right-15">
                 <li class='inline-block'>Name: {{profile_user.name}}</li><br>
                 <li class='inline-block'>Username: {{profile_user.username}}</li><br>
                 <li class='inline-block'>Email: {{profile_user.email}}</li><br>
@@ -76,37 +76,6 @@
     <br><br><br>
 
     {% include "./footer.html" %}
-
-    <!-- <p>Email: {{profile_user.email}}</p>
-    <h4>{{profile_user.name}}'s' listed tasks:</h4>
-    <div class='middle size'>
-    <table class="table">
-        <tr>
-            <th>Title</th>
-            <th>Image</th>
-            <th>Description</th>
-            <th>Pay</th>
-            <th>Zip Code</th>
-            <th>Actions</th>
-        </tr>
-        {% for task in uploaded_tasks %}
-        <tr>
-            <td>{{task.title}}</td>
-            <td>
-                <div class='size_small'>
-                    <img src='{{task.image.url}}'>
-                </div>
-            </td>
-            <td>{{task.description}}</td>
-            <td>${{task.price}}</td>
-            <td>{{task.zip_code}}</td>
-            <td>
-                <a href="/task/{{task.id}}/bid">Help {{task.uploaded_by.name}}</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-    </div> -->
 
 </body>
 </html>
