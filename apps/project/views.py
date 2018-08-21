@@ -28,7 +28,7 @@ def home(request): #Home
     user = User.objects.get(id=request.session['id'])
     context = {
         'logged_user': User.objects.get(id=request.session['id']),
-        'available_tasks': Task.objects.exclude(uploaded_by=user),
+        'available_tasks': Task.objects.exclude(uploaded_by=user).exclude(status="1"), #Doesn't include tasks with an accepted bidder
     }
 
     return render(request, 'project/home.html', context)
@@ -53,7 +53,7 @@ def user_profile(request, user_id): #User_Profile
     if page_user == current_user:
         context = {
             'logged_user': current_user,
-            'uploaded_tasks': Task.objects.filter(uploaded_by=current_user),
+            'uploaded_tasks': Task.objects.filter(uploaded_by=current_user), #.exclude(status="1") add to remove accepted bids
             'pending_tasks': User.objects.get(id=user_id).tasks.all()
         }
         
@@ -131,6 +131,28 @@ def accept_offer(request, task_id, offering_id):
     task = Task.objects.get(id=task_id)
     task.status = 1
     task.save()
+
+    return redirect('/user/{}'.format(request.session['id']))
+
+def view_task(request, task_id):
+
+    if not "id" in request.session:
+        return redirect('/')
+
+    context = {
+        'current_task': Task.objects.get(id=task_id),
+        'logged_user': User.objects.get(id=request.session['id'])
+    }
+
+    print "Users bidded are: "
+    print Task.objects.get(id=task_id).users_bidded.all()
+
+    if Task.objects.get(id=task_id).users_bidded.all():
+        print "hello" 
+    else: 
+        print "nope"
+
+    return render(request, 'project/task.html', context)
 
 # POST # POST # POST # POST # POST # POST # POST # POST # POST # POST # POST # POST 
 # =============================================================================

@@ -1,0 +1,110 @@
+{% load has_bid %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Placeholder</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+    </script>
+    <script src="{% static 'project/bootstrap.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'project/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'project/bootstrap.min.css' %}">
+</head>
+<body class="background background_white fixed-navbar-padding">
+
+    <!--Nav-->
+    {% include "./nav.html" %}
+
+    <br>
+
+    <div class="row justify-content-center">
+        <div class="col col-sm-12 col-md-3 offset-md-1">
+            <div class="task-image margin-auto-sm-and-down">
+                <img src="{{current_task.image.url}}" alt="Oops! Couldn't find image.">
+            </div>
+        </div>
+        <br><br>
+        <div class="col col-sm-12 col-md-4 margin-auto-sm-and-down">
+            <div class="font-size-11 text-align-center-sm-and-down">
+                <p>{{current_task.title}}</p>
+                <p>Uploaded by: <a href="/user/{{current_task.uploaded_by.id}}">{{current_task.uploaded_by.name}}</a></p>
+                <p>{{current_task.description}}</p>
+                <p>Reward: ${{current_task.price}}</p>
+                <p>Zip: {{current_task.zip_code}}</p>
+
+                <!-- If you haven't uploaded the task -->
+                {% if current_task.uploaded_by.id != logged_user.id %}
+                    {% if not logged_user.id|has_bid:current_task.id %}
+                        <a href="/task/{{current_task.id}}/bid">Help {{current_task.uploaded_by.name}}</a>
+                    {% else %}
+                        <a href="/task/{{current_task.id}}/remove-bid">Remove Offer</a>
+                    {% endif %}
+                {% else %}
+                <!-- If you have uploaded the task and nobody has bid on it -->
+                {% if not current_task.users_bidded.all %}
+                    <a href="/task/edit/{{current_task.id}}" data-toggle="modal" data-target="#editTaskModal">Edit Task</a><br>
+
+                    <!-- Create Task Modal -->
+                    <div class="modal fade" id="editTaskModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header text-center">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Task</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            <div class="modal-body text-align-center">
+                                <form class="font-size-11" id="editTask" action="/task/edit/process/{{current_task.id}}" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="formStyle">
+                                        <label for="title">Title:</label><input type='text' name='title' value="{{current_task.title}}" placeholder="Title" pattern=".{4,}" required title="4 characters minimum"><br>
+                                        <label for="description">Description:</label><textarea name="description" cols="30" rows="7" placeholder="Description" pattern=".{10,}" required title="10 characters minimum">{{current_task.description}}</textarea><br>
+                                        <label for="pay">Pay:</label><input type="number" value="{{current_task.price}}" name="pay" min=".01" step=".01" placeholder="Pay"><br>
+                                        <label for="zip_code">Five Digit Zip:</label><input type='text' value="{{current_task.zip_code}}" name='zip_code' required pattern="[0-9]{5}" placeholder="Five Digit Zip"><br>
+                                        <label for="image">Add an image:</label><input type='file' name='image' accept="image/*"><br>
+                                    </div>
+                                </form>
+                                <!--Error Messages-->
+                                {% if messages %} 
+                                    {% for message in messages %}
+                                        <p class='red'>{{message}}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                                <button class="btn btn-sm btn-info" form="editTask" type="submit" value='Edit Task'>Edit Task</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div> 
+                    <!--End Modal-->   
+
+                    <a href="/task/delete/{{current_task.id}}">Delete Task</a>
+                    
+                    <!-- If you have uploaded the task and somebody has bid on it -->
+                    {% else %} 
+
+                    <a href="/task/delete/{{current_task.id}}">Delete Task</a>
+
+                    {% endif %}
+
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <br><br><br>
+
+    {% include "./footer.html" %}
+    
+</body>
+</html>

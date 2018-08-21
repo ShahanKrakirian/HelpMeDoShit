@@ -24,6 +24,8 @@
 
     <br><br>
 
+
+    <!--Photo and User Information-->
     <div class="row justify-center text-align-center-sm-and-down home-row">
         <div class="col col-md-4 col-sm-12">
             <div class='size_small inline-block margin-top'>
@@ -39,9 +41,11 @@
                 <li class="inline-block"><a href="/task/add" data-toggle="modal" data-target="#createTaskModal">Create a Task</a></li>
             </ul>
         </div>
+
+        <!--My Uploaded Tasks-->
         <div class="col col-md-7 col-sm-12 text-align-center-sm-and-down">
             <h6>My uploaded tasks:</h6>
-            <table class="table table-responsive table-sm font-size-11 container-sm-and-down">
+            <table class="table table-responsive table-sm font-size-11 container-sm-and-down overflow">
                 <thead class="thead-light">
                     <tr>
                         <th>Title</th>
@@ -55,7 +59,7 @@
                 </thead>
                 {% for task in uploaded_tasks %}
                 <tr>
-                    <td>{{task.title}}</td>
+                    <td><a href="/task/{{task.id}}">{{task.title}}</a></td>
                     <td>
                         <div class='size_small image-size'>
                             <img src='{{task.image.url}}'>
@@ -65,17 +69,13 @@
                     <td>${{task.price}}</td>
                     <td>{{task.zip_code}}</td>
                     <td>
-                        <table>
-                            {% for offer in task.users_bidded.all %}
-                            {% if offer %}
-                            <tr>
-                                <td><a href="/user/{{offer.id}}">{{offer.name}}</a></td>
-                                <td><a href="/decline_offer/{{task.id}}/{{offer.id}}">Decline Offer</a></td> <!--Make me-->
-                                <td><a href="/accept_offer/{{task.id}}/{{offer.id}}">Accept Offer</a></td>
-                            </tr>
-                            {% endif %}
-                            {% endfor %}
-                        </table>
+                        {% for offer in task.users_bidded.all %}
+                        {% if offer %}
+                            <a href="/user/{{offer.id}}">Offered by: {{offer.name}}</a><br>
+                            <a href="/decline_offer/{{task.id}}/{{offer.id}}">Decline Offer</a><br> <!--Make me-->
+                            <a href="/accept_offer/{{task.id}}/{{offer.id}}">Accept Offer</a><br>
+                        {% endif %}
+                        {% endfor %}
                     </td>
                     <td>
                         {% if task.status == 0 %}
@@ -117,6 +117,10 @@
                                     </div>
                                 </div> 
                                 <!--End Modal-->   
+
+                            <a href="/task/delete/{{task.id}}">Delete Task</a>
+
+                            {% else %}
 
                             <a href="/task/delete/{{task.id}}">Delete Task</a>
                         {% endif %}
@@ -280,6 +284,15 @@
             </div>
         </div>
     </div>    
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>

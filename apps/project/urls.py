@@ -23,6 +23,7 @@ urlpatterns = [
     #Tasks
     url(r'^task/add$', views.add_task),
     url(r'^task/add/process$', views.add_task_process),
+    url(r'^task/(?P<task_id>\d+)$', views.view_task),
     url(r'^task/edit/process/(?P<task_id>\w+)$', views.edit_task_process),
     url(r'^task/delete/(?P<task_id>\d+)$', views.delete_task),
     url(r'^task/edit/(?P<task_id>\d+)$', views.edit_task),

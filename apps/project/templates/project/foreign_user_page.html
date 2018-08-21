@@ -51,7 +51,7 @@
                 </thead>
                 {% for task in uploaded_tasks %}
                 <tr>
-                    <td>{{task.title}}</td>
+                    <td><a href="/task/{{task.id}}">{{task.title}}</a></td>
                     <td>
                         <div class='size_small image-size'>
                             <img src='{{task.image.url}}'>
