@@ -28,6 +28,8 @@ urlpatterns = [
     url(r'^task/delete/(?P<task_id>\d+)$', views.delete_task),
     url(r'^task/edit/(?P<task_id>\d+)$', views.edit_task),
     url(r'^task/(?P<task_id>\d+)/bid$', views.bid_task),
+    url(r'^task/(?P<task_id>\d+)/cancel-work-agreement$', views.cancel_work_agreement),
     url(r'^task/(?P<task_id>\d+)/remove-bid$', views.remove_bid),
     url(r'^accept_offer/(?P<task_id>\d+)/(?P<offering_id>\d+)$', views.accept_offer),
+    url(r'^decline_offer/(?P<task_id>\d+)/(?P<offering_id>\d+)$', views.decline_offer),
 ]

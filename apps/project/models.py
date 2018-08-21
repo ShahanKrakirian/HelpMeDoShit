@@ -75,7 +75,7 @@ class Task(models.Model):
     title = models.CharField(max_length = 255)
     description = models.TextField()
     price = models.DecimalField(max_digits = 6, decimal_places = 2)
-    status = models.SmallIntegerField(default = 0) # 0 = Available | 1 = Not Available
+    status = models.SmallIntegerField(default = 0) # 0 = Available | 1 = Accepted | 2 = Complete
     image = models.ImageField(upload_to='media/', default='/no_image.jpg')
     zip_code = models.CharField(max_length=10)
     created_at = models.DateTimeField(auto_now_add = True)
@@ -84,6 +84,7 @@ class Task(models.Model):
     #Relationships 
     uploaded_by = models.ForeignKey(User, related_name = "tasks_uploaded")
     users_bidded = models.ManyToManyField(User, related_name = "tasks")
+    accepted_helper = models.ForeignKey(User, related_name = "tasks_helping_with", null=True)
 
     objects = TaskManager()
 
@@ -97,10 +98,10 @@ class Review(models.Model):
     user = models.ForeignKey(User, related_name="reviews")
     reviewed_by = models.ForeignKey(User, related_name="reviews_left")
 
-class Cart(models.Model):
-    created_at = models.DateTimeField(auto_now_add = True)
-    updated_at = models.DateTimeField(auto_now = True)
+# class Cart(models.Model):
+#     created_at = models.DateTimeField(auto_now_add = True)
+#     updated_at = models.DateTimeField(auto_now = True)
 
-    #Relationships
-    user = models.OneToOneField(User)
-    tasks = models.ManyToManyField(Task, related_name = "cart", null=True)
+#     #Relationships
+#     user = models.OneToOneField(User)
+#     tasks = models.ManyToManyField(Task, related_name = "cart", null=True)

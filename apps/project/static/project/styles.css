@@ -57,8 +57,7 @@ input{
     height: 25px !important;
 }
 .home-row{
-    height: 300px;
-    overflow: scroll;
+    height: 250px;
 }
 .margin-top-12{
     margin-top:12px;
@@ -201,4 +200,7 @@ img{
 .hvr-grow:focus,
 .hvr-grow:active {
     transform: scale(1.025);
+}
+.height-100{
+    height:100px;
 }

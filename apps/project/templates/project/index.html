@@ -83,12 +83,16 @@
                 <input class="btn btn-sm btn-info line-height" type="submit" value="Register">
                 <br>
             </form>
+            <br>
             <!--Error Messages-->
-            {% if messages %} 
-                {% for message in messages %}
-                    <p class='red'>{{message}}</p>
-                {% endfor %}
-            {% endif %}
+            <div class="font-size-11">
+                {% if messages %} 
+                    {% for message in messages %}
+                        <p class='red'>{{message}}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <br>
             <p class="font-size-11 margin-top">Already have an account? Login <a href="#" id="logintrigger">here</a>.</p>
         </div>
 
@@ -106,12 +110,16 @@
                 </div>
                 <input class="btn btn-sm btn-info line-height" type="submit" value="Login">
             </form>
+            <br>
             <!--Error Messages-->
-            {% if messages %} 
-                {% for message in messages %}
-                    <p class='red'>{{message}}</p>
-                {% endfor %}
-            {% endif %}
+            <div class="font-size-11">
+                {% if messages %} 
+                    {% for message in messages %}
+                        <p class='red'>{{message}}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <br>
             <p class="font-size-11 margin-top">Don't have an account? Register <a href="#" id="registrationtrigger">here</a>.</p>
         </div>
 

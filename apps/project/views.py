@@ -52,9 +52,12 @@ def user_profile(request, user_id): #User_Profile
 
     if page_user == current_user:
         context = {
-            'logged_user': current_user,
-            'uploaded_tasks': Task.objects.filter(uploaded_by=current_user), #.exclude(status="1") add to remove accepted bids
-            'pending_tasks': User.objects.get(id=user_id).tasks.all()
+            'logged_user': current_user, #Session user
+            'getting_help_tasks': Task.objects.filter(uploaded_by=current_user, status='1'), #Session user's tasks that have a "helper"
+            'uploaded_tasks': Task.objects.filter(uploaded_by=current_user).exclude(status='1'), #Session user's tasks that don't have a "helper"
+            'my_offers': Task.objects.exclude(uploaded_by=current_user).filter(users_bidded=current_user).exclude(status='1'), #Session user's offers that aren't accepted
+            'my_accepted_offers': Task.objects.filter(users_bidded=current_user).filter(status='1'), #Offers accepted made by session user
+            #'pending_tasks': User.objects.get(id=user_id).tasks.all() 
         }
         
         return render(request, 'project/user_profile.html', context)
@@ -127,9 +130,36 @@ def accept_offer(request, task_id, offering_id):
 
     if not "id" in request.session:
         return redirect('/')
+
+    current_user = User.objects.get(id=request.session['id'])
     
     task = Task.objects.get(id=task_id)
     task.status = 1
+    task.accepted_helper = current_user
+    task.save()
+
+    return redirect('/user/{}'.format(request.session['id']))
+
+def decline_offer(request, task_id, offering_id):
+
+    if not "id" in request.session:
+        return redirect('/')
+
+    #task_id == task at hand 
+    #offering_id == id of user object offering help
+
+    return redirect('/user/{}'.format(request.session['id']))
+
+def cancel_work_agreement(request, task_id):
+
+    if not "id" in request.session:
+        return redirect('/')
+
+    task = Task.objects.get(id=task_id)
+
+    task.accepted_helper = None
+    task.status = 0
+    # Need to remove all bidded users here, which entails getting many to many relationship objects using task id and all previous offering user ids
     task.save()
 
     return redirect('/user/{}'.format(request.session['id']))
@@ -170,7 +200,7 @@ def register(request): #Register
         hp = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt()) #successful reg
         user = User.objects.create(name=request.POST['name'], email=request.POST['email'], username=request.POST['username'], password=hp, zip_code=request.POST['zip'])
         request.session['id'] = user.id
-        Cart.objects.create(user=user) 
+        #Cart.objects.create(user=user) Decide if I want this later
         return redirect('/home')
 
 #----------
