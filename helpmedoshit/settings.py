@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+#Stripe API
+STRIPE_PUBLIC_KEY = "pk_test_HeJ6gEkhtDpcUNxcNbnTX5V1"
+STRIPE_SECRET_KEY = "sk_test_iK16sPpIjQt0tua5L5YlgCwl"
+
 
 # Application definition
 

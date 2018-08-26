@@ -7,8 +7,6 @@ import datetime
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]+$')
 
-# Create your models here.
-
 class UserManager(models.Manager):
     def reg_validator(self, postData):
         errors = {}
@@ -69,6 +67,7 @@ class User(models.Model):
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
 
+    #For Validations
     objects = UserManager()
 
 class Task(models.Model):
@@ -82,26 +81,33 @@ class Task(models.Model):
     updated_at = models.DateTimeField(auto_now = True)
 
     #Relationships 
-    uploaded_by = models.ForeignKey(User, related_name = "tasks_uploaded")
-    users_bidded = models.ManyToManyField(User, related_name = "tasks")
-    accepted_helper = models.ForeignKey(User, related_name = "tasks_helping_with", null=True)
+    uploaded_by = models.ForeignKey(User, related_name = "tasks_uploaded", on_delete=models.CASCADE)
+    users_bidded = models.ManyToManyField(User, related_name = "users_bidded")
+    #bid = models.ForeignKey(User, related_name = "users_bidded", on_delete=models.CASCADE)
+    accepted_helper = models.ForeignKey(User, related_name = "tasks_helping_with", null=True, on_delete=models.CASCADE)
 
+    #For Validations
     objects = TaskManager()
 
-class Review(models.Model):
-    content = models.TextField()
-    rating = models.SmallIntegerField()
-    created_at = models.DateTimeField(auto_now_add = True)
-    updated_at = models.DateTimeField(auto_now = True)
-
-    #Relationships
-    user = models.ForeignKey(User, related_name="reviews")
-    reviewed_by = models.ForeignKey(User, related_name="reviews_left")
-
-# class Cart(models.Model):
+# Not incorporated in project yet
+# class Review(models.Model):
+#     content = models.TextField()
+#     rating = models.SmallIntegerField()
 #     created_at = models.DateTimeField(auto_now_add = True)
 #     updated_at = models.DateTimeField(auto_now = True)
 
 #     #Relationships
-#     user = models.OneToOneField(User)
-#     tasks = models.ManyToManyField(Task, related_name = "cart", null=True)
+#     user = models.ForeignKey(User, related_name="reviews", on_delete=models.CASCADE)
+#     reviewed_by = models.ForeignKey(User, related_name="reviews_left", on_delete=models.CASCADE)
+
+class Pay(models.Model):
+    amount = models.DecimalField(max_digits = 6, decimal_places = 2)
+    created_at = models.DateTimeField(auto_now_add = True)
+    updated_at = models.DateTimeField(auto_now = True)
+    status = models.SmallIntegerField(default=0) # 0 = unpaid 1 = paid
+    stripe_charge_id = models.CharField(max_length=255, null=True)
+
+    #Relationships
+    task = models.OneToOneField(Task, related_name = "payment")
+    pay_from = models.OneToOneField(User, related_name = "payment_made")
+    pay_to = models.OneToOneField(User, related_name = "payment_accepted")
